@@ -10,7 +10,7 @@ export default class Store {
     typeof fn === 'function' && fn()
     this._strictState = strictState
   }
-  constructor (options) {
+  constructor (options = {}) {
     const store = this
 
     // Create tree manipulation data
@@ -51,32 +51,32 @@ export default class Store {
   get state () {
     return this._state.data
   }
-  commit = (type, payload) => {
+  commit (type, payload) {
     const entry = this._mutationsWrapped[type] || []
     this._strictThrough(() => {
       entry.forEach(handler => handler(payload))
     })
     this._subscribe.forEach(subscribe => subscribe({type, payload}, this.state))
   }
-  dispatch = (type, payload) => {
+  dispatch (type, payload) {
     const entry = this._actionsWrapped[type] || []
     return Promise.all(entry.map(handler => handler(payload))).then(() => {
       this._subscribeAction.forEach(subscribeAction => subscribeAction({type, payload}, this.state))
     })
   }
-  subscribe = (fn) => {
+  subscribe (fn) {
     if (typeof fn !== 'function') {
       throw 'The parameter type is Function'
     }
     this._subscribe.push(fn)
   }
-  subscribeAction = (fn) => {
+  subscribeAction (fn) {
     if (typeof fn !== 'function') {
       throw 'The parameter type is Function'
     }
     this._subscribeAction.push(fn)
   }
-  replaceState = (newState) => {
+  replaceState (newState) {
     this._strictThrough(() => {
       this._state.data = newState
     })
@@ -85,7 +85,7 @@ export default class Store {
     app.provide(injectKey !== null ? injectKey : storeKey, this)
     app.config.globalProperties.$store = this
   }
-  registerModule = (path, module) => {
+  registerModule (path, module) {
     if (typeof path === 'string') path = [path]
 
     const store = this
@@ -96,7 +96,7 @@ export default class Store {
 
     resetStoreState(store, store.state)
   }
-  unregisterModule = (path) => {
+  unregisterModule (path) {
     if (typeof path === 'string') path = [path]
 
     this._modules.unregister(path)
@@ -108,7 +108,7 @@ export default class Store {
      
     resetStore(this)
   }
-  hasModule = (path) => {
+  hasModule (path) {
     if (typeof path === 'string') path = [path]
 
     return this._modules.inRootModule(path)

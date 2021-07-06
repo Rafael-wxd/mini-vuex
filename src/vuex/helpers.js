@@ -16,6 +16,7 @@ function createMapFun (namespace, map, type) {
   map = mapData['map']
 
   const res = {}
+
   normalizeMap(map).forEach(({key, value}) => {
     res[key] = function mappedState (...args) {
       let state = this.$store.state
@@ -38,13 +39,12 @@ function createMapFun (namespace, map, type) {
           ? value.call(this, getters)
           : getters[key]
       } else if (type === 'mutations') {
-        return commit.apply(this.$store, [namespace + value].concat(args))
+        return commit.apply(this.$store, [namespace + key].concat(args || ''))
       } else if (type === 'actions') {
-        return dispatch.apply(this.$store, [namespace + value].concat(args))
+        return dispatch.apply(this.$store, [namespace + key].concat(args || ''))
       }
     }
   })
-
   return res
 }
 

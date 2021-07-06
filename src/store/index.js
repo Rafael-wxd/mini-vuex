@@ -13,6 +13,7 @@ const store = createStore({
   },
   mutations: {
     update (state, payload) {
+      console.log(state, payload)
       state.a += payload
     }
   },
@@ -39,7 +40,6 @@ const store = createStore({
       },
       actions: {
         update (store, payload) {
-          console.log(store)
           store.commit('update', payload)
         }
       }

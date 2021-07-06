@@ -31,15 +31,26 @@
     <button @click="$store.dispatch('b/update', 2)">修改b</button>
     <button @click="$store.dispatch('c/update', 2)">修改c</button>
   </div>
+
+  <div style="margin-top: 10px;">
+    <span>mapMutations</span>
+    <button @click="updateClick">修改a</button>
+  </div>
 </template>
 
 <script>
-import { useStore } from '@/vuex'
+import { useStore, mapActions } from '@/vuex'
 import { computed } from 'vue'
 
 export default {
   name: 'App',
   components: {},
+  methods: {
+    ...mapActions(['update']),
+    updateClick () {
+      this.update('dsa')
+    },
+  },
   setup () {
     const store = useStore()
 

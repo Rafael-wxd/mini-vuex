@@ -7,6 +7,7 @@ function createStore (options) {
 }
 
 export default {
+  Store,
   createStore,
   useStore,
   mapState,
@@ -15,6 +16,7 @@ export default {
 }
 
 export {
+  Store,
   createStore,
   useStore,
   mapState,

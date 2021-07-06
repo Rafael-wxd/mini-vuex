@@ -4,7 +4,7 @@ export default class Module {
   constructor (rawModule) {
     this._raw = rawModule
     this._children = {}
-    this.state = rawModule.state
+    this.state = rawModule.state || {}
     this.namespaced = rawModule.namespaced
   }
   getChild (key) {
