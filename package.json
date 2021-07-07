@@ -1,7 +1,9 @@
 {
   "name": "wxd-vuex",
   "version": "0.1.0",
-  "private": true,
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "rollup --config rollup.config.js",
