@@ -16,7 +16,6 @@ function createMapFun (namespace, map, type) {
   map = mapData['map']
 
   const res = {}
-
   normalizeMap(map).forEach(({key, value}) => {
     res[key] = function mappedState (...args) {
       let state = this.$store.state
@@ -29,19 +28,28 @@ function createMapFun (namespace, map, type) {
         state = module._raw.state || {}
         getters = module._raw.getters || {}
       }
-
       if (type === 'state') {
         return typeof value === 'function'
           ? value.call(this, state, getters)
-          : state[key]
+          : Array.isArray(map)
+            ? state[key]
+            : state[value]
       } else if (type === 'getters') {
         return typeof value === 'function'
           ? value.call(this, getters)
-          : getters[key]
+          : Array.isArray(map)
+            ? getters[key]
+            : getters[value]
       } else if (type === 'mutations') {
-        return commit.apply(this.$store, [namespace + key].concat(args || ''))
+        const name = Array.isArray(map)
+          ? namespace + key
+          : namespace + value
+        return commit.apply(this.$store, [name].concat(args || ''))
       } else if (type === 'actions') {
-        return dispatch.apply(this.$store, [namespace + key].concat(args || ''))
+        const name = Array.isArray(map)
+          ? namespace + key
+          : namespace + value
+        return dispatch.apply(this.$store, [name].concat(args || ''))
       }
     }
   })
