@@ -13,7 +13,6 @@ const store = createStore({
   },
   mutations: {
     update (state, payload) {
-      console.log(state, payload)
       state.a += payload
     }
   },
@@ -24,7 +23,6 @@ const store = createStore({
   },
   modules: {
    b: {
-     namespaced: true,
      state: {
        a: 'b'
      },
@@ -45,7 +43,6 @@ const store = createStore({
       }
    },
    c: {
-     namespaced: true,
      state: {
        a: 'c'
      },
